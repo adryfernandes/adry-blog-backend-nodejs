@@ -3,7 +3,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Delete, Param, Put } from '@nestjs/common/decorators';
 import { CreatePostDTO } from './dto/createPost.dto';
 import { PostEntity } from '../database/entities/post.entity';
-import { PostService } from '../service/post.service';
+import { PostService } from '../services/post.service';
 
 @Controller('post')
 export class PostController {

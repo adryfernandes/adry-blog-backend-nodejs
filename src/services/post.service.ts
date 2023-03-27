@@ -1,8 +1,7 @@
-import { PostEntity } from './../database/entities/post.entity';
-import { Inject, Injectable, Post } from '@nestjs/common';
+import { PostEntity } from '../database/entities/post.entity';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   FindManyOptions,
-  FindOptionsWhere,
   Repository,
   SaveOptions,
   UpdateResult,

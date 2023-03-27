@@ -1,4 +1,4 @@
-import { ServiceModule } from '../service/service.module';
+import { ServiceModule } from '../services/service.module';
 import { Module } from '@nestjs/common';
 import { PostController } from './post.controller';
 import { TagController } from './tag.controller';
