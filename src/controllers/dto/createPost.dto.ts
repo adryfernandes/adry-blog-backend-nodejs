@@ -1,6 +1,8 @@
 import { IsNotEmpty } from 'class-validator';
+import { IsSigleTitlePost } from '../validations/IsSigleTitlePost.validator';
 
 export class CreatePostDTO {
+  @IsSigleTitlePost({ message: 'Esse título já existe.' })
   @IsNotEmpty({ message: 'O título é obrigatório.' })
   title: string;
 
