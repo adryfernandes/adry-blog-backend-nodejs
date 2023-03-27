@@ -1,4 +1,4 @@
-import { ServiceModule } from './../service/service.module';
+import { ServiceModule } from '../service/service.module';
 import { Module } from '@nestjs/common';
 import { PostController } from './post/post.controller';
 
@@ -6,4 +6,4 @@ import { PostController } from './post/post.controller';
   controllers: [PostController],
   imports: [ServiceModule],
 })
-export class V1Module {}
+export class ControllerModule {}
