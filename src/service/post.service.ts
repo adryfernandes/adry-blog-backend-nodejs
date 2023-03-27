@@ -1,7 +1,6 @@
 import { PostEntity } from './../database/entities/post.entity';
 import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { Post } from '../interfaces/post.interface';
+import { FindManyOptions, Repository, SaveOptions } from 'typeorm';
 
 @Injectable()
 export class PostService {
@@ -10,9 +9,11 @@ export class PostService {
     private postRepository: Repository<PostEntity>,
   ) {}
 
-  private readonly posts: Post[] = [];
+  async list(options?: FindManyOptions<PostEntity>): Promise<PostEntity[]> {
+    return await this.postRepository.find({ ...options });
+  }
 
-  async list(): Promise<PostEntity[]> {
-    return await this.postRepository.find();
+  async create(post: PostEntity, options?: SaveOptions): Promise<PostEntity> {
+    return await this.postRepository.save(post, { ...options });
   }
 }

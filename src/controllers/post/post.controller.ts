@@ -1,6 +1,7 @@
+import { CreatePostDTO } from './../dto/createPost.dto';
 import { PostEntity } from './../../database/entities/post.entity';
 import { PostService } from '../../service/post.service';
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 
 @Controller('post')
 export class PostController {
@@ -11,8 +12,17 @@ export class PostController {
     return await this._postService.list();
   }
 
-  @Post()
-  create() {
-    return '';
+  @Post('create')
+  async create(@Body() data: CreatePostDTO): Promise<PostEntity> {
+    const postEntity = new PostEntity();
+    postEntity.title = data.title.toLowerCase().trim();
+    postEntity.description = data.description.toLowerCase().trim();
+    postEntity.content = data.content.trimEnd();
+
+    const savedPostEntity: PostEntity = await this._postService.create(
+      postEntity,
+    );
+
+    return savedPostEntity;
   }
 }
