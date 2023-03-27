@@ -1,9 +1,5 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Timestamp } from './extendigs/timestamp';
 
 @Entity('posts')
 export class PostEntity {
@@ -19,6 +15,6 @@ export class PostEntity {
   @Column('text')
   content: string;
 
-  @CreateDateColumn()
-  created_at: Date;
+  @Column(() => Timestamp, { prefix: false })
+  times: Timestamp;
 }

@@ -27,6 +27,6 @@ export class PostService {
   }
 
   async delete(post: PostEntity): Promise<void> {
-    await this.postRepository.softDelete(post);
+    await this.postRepository.softRemove(post);
   }
 }
