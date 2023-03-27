@@ -14,8 +14,11 @@ export class PostService {
     private postRepository: Repository<PostEntity>,
   ) {}
 
-  async get(options?: FindManyOptions<PostEntity>): Promise<PostEntity> {
-    return await this.postRepository.findOne({ ...options });
+  async get(
+    uuid: string,
+    options?: FindManyOptions<PostEntity>,
+  ): Promise<PostEntity> {
+    return await this.postRepository.findOne({ where: { uuid }, ...options });
   }
 
   async list(options?: FindManyOptions<PostEntity>): Promise<PostEntity[]> {

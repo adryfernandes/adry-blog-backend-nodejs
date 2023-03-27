@@ -8,9 +8,21 @@ import { PostService } from '../service/post.service';
 export class PostController {
   constructor(private _postService: PostService) {}
 
-  @Get()
+  @Get('list')
   async listAll(): Promise<PostEntity[]> {
     return await this._postService.list();
+  }
+
+  @Get(':uuid')
+  async get(@Param() params: any): Promise<PostEntity> {
+    const { uuid } = params;
+
+    const post: PostEntity = await this._postService.get(uuid);
+    if (!post) {
+      throw new Error('Postagem não encontrada.');
+    }
+
+    return post;
   }
 
   @Post()
@@ -30,7 +42,7 @@ export class PostController {
   @Delete(':uuid')
   async delete(@Param() params: any): Promise<void> {
     const { uuid } = params;
-    const post: PostEntity = await this._postService.get({ where: { uuid } });
+    const post: PostEntity = await this._postService.get(uuid);
     if (!post) {
       throw new Error('Postagem não encontrada.');
     }
