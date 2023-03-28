@@ -21,6 +21,13 @@ export class TagService {
     return await this.tagRepository.findOne({ where: { uuid }, ...options });
   }
 
+  async findByTitle(
+    title: string,
+    options?: FindManyOptions<TagEntity>,
+  ): Promise<TagEntity> {
+    return await this.tagRepository.findOne({ where: { title }, ...options });
+  }
+
   async list(options?: FindManyOptions<TagEntity>): Promise<TagEntity[]> {
     return await this.tagRepository.find({ ...options });
   }
