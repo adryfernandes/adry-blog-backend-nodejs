@@ -6,7 +6,7 @@ export class TagEntity {
   @PrimaryGeneratedColumn('uuid')
   uuid: string;
 
-  @Column()
+  @Column({ unique: true })
   title: string;
 
   @Column({ nullable: true })

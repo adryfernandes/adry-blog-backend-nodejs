@@ -1,8 +1,7 @@
 import { PostEntity } from './entities/post.entity';
 import { DataSource } from 'typeorm';
-import { default1679885954898 } from './migrations/1679885954898-default';
 import { TagEntity } from './entities/tag.entity';
-import { default1679888169099 } from './migrations/1679888169099-default';
+import { default1680024422348 } from './migrations/1680024422348-default';
 
 export default new DataSource({
   type: 'mysql',
@@ -13,5 +12,5 @@ export default new DataSource({
   database: 'blog_adry',
   migrationsTableName: 'Migrations',
   entities: [PostEntity, TagEntity],
-  migrations: [default1679885954898, default1679888169099],
+  migrations: [default1680024422348],
 });

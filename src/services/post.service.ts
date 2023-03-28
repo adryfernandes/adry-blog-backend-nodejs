@@ -25,6 +25,13 @@ export class PostService {
     return await this.postRepository.find({ ...options });
   }
 
+  async findByTitle(
+    title: string,
+    options?: FindManyOptions<PostEntity>,
+  ): Promise<PostEntity> {
+    return await this.postRepository.findOne({ where: { title }, ...options });
+  }
+
   async create(post: PostEntity, options?: SaveOptions): Promise<PostEntity> {
     return await this.postRepository.save(post, { ...options });
   }
