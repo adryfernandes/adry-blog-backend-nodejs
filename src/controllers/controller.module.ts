@@ -1,13 +1,11 @@
-import { IsSingleTagValidator } from './dto/validations/isSingleTag.validator';
-import { IsSingleTitleValidator } from './dto/validations/isSingleTitle.validator';
-import { ServiceModule } from '../services/service.module';
 import { Module } from '@nestjs/common';
+import { ServiceModule } from '../services/service.module';
 import { PostController } from './post.controller';
 import { TagController } from './tag.controller';
+import { ValidationsModule } from '../validations/validations.module';
 
 @Module({
-  imports: [ServiceModule],
+  imports: [ServiceModule, ValidationsModule],
   controllers: [PostController, TagController],
-  providers: [IsSingleTitleValidator, IsSingleTagValidator],
 })
 export class ControllerModule {}

@@ -1,5 +1,5 @@
-import { PostEntity } from '../../../database/entities/post.entity';
-import { PostService } from '../../../services/post.service';
+import { PostEntity } from './../database/entities/post.entity';
+import { PostService } from './../services/post.service';
 import {
   registerDecorator,
   ValidationOptions,

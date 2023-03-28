@@ -1,4 +1,4 @@
-import { IsSigleTitle } from '../validations/isSingleTitle.validator';
+import { IsSigleTitle } from './../../../validations/isSingleTitle.validator';
 import { IsNotEmpty } from 'class-validator';
 
 export class CreatePostDTO {
