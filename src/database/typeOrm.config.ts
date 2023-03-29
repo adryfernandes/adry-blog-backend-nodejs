@@ -2,8 +2,8 @@ import { DataSource } from 'typeorm';
 import { TagEntity } from './entities/tag.entity';
 import { PostEntity } from './entities/post.entity';
 import { KeyEntity } from './entities/key.entity';
-import { default1680050633489 } from './migrations/1680050633489-default';
-import { default1680051617578 } from './migrations/1680051617578-default';
+import { default1680053558788 } from './migrations/1680053558788-default';
+import { default1680053733384 } from './migrations/1680053733384-default';
 
 export default new DataSource({
   type: 'mysql',
@@ -14,5 +14,5 @@ export default new DataSource({
   database: 'blog_adry',
   migrationsTableName: 'Migrations',
   entities: [PostEntity, TagEntity, KeyEntity],
-  migrations: [default1680050633489, default1680051617578],
+  migrations: [default1680053558788, default1680053733384],
 });

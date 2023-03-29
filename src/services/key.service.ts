@@ -13,7 +13,10 @@ export class KeyService {
     key: string,
     options?: FindManyOptions<KeyEntity>,
   ): Promise<KeyEntity> {
-    return await this.keyRepository.findOne({ where: { key }, ...options });
+    return await this.keyRepository.findOne({
+      where: { x_api_key: key },
+      ...options,
+    });
   }
 
   async delete(key: KeyEntity): Promise<void> {
