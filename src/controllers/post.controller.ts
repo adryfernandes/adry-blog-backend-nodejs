@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Put, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { Param, Query } from '@nestjs/common/decorators';
 import { Paginate } from './../utils/paginate';
 import {
@@ -28,7 +37,7 @@ export class PostController {
 
     const post: PostEntity = await this._postService.findOne(uuid);
     if (!post) {
-      throw new Error('Postagem não encontrada.');
+      throw new HttpException('Postagem não encontrada.', HttpStatus.NOT_FOUND);
     }
 
     return post;
@@ -56,7 +65,7 @@ export class PostController {
     const { uuid } = params;
     const post: PostEntity = await this._postService.findOne(uuid);
     if (!post) {
-      throw new Error('Postagem não encontrada.');
+      throw new HttpException('Postagem não encontrada.', HttpStatus.NOT_FOUND);
     }
 
     post.title = data.title && data.title.toLowerCase().trim();
@@ -73,7 +82,7 @@ export class PostController {
     const { uuid } = params;
     const post: PostEntity = await this._postService.findOne(uuid);
     if (!post) {
-      throw new Error('Postagem não encontrada.');
+      throw new HttpException('Postagem não encontrada.', HttpStatus.NOT_FOUND);
     }
 
     await this._postService.delete(post);

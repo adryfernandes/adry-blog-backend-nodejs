@@ -1,5 +1,13 @@
 import { Param, Put, Delete } from '@nestjs/common/decorators';
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { UpdateTagDTO } from './dto/tag/updateTag.dto';
 import { Paginate } from './../utils/paginate';
 import {
@@ -28,7 +36,7 @@ export class TagController {
 
     const tag: TagEntity = await this._tagService.findOne(uuid);
     if (!tag) {
-      throw new Error('Tag não encontrada.');
+      throw new HttpException('Tag não encontrada.', HttpStatus.NOT_FOUND);
     }
 
     return tag;
@@ -42,7 +50,7 @@ export class TagController {
     const { uuid } = params;
     const tag: TagEntity = await this._tagService.findOne(uuid);
     if (!tag) {
-      throw new Error('Tag não encontrada.');
+      throw new HttpException('Tag não encontrada.', HttpStatus.NOT_FOUND);
     }
 
     tag.title = data.title && data.title.toLowerCase().trim();
@@ -70,7 +78,7 @@ export class TagController {
     const { uuid } = params;
     const tag: TagEntity = await this._tagService.findOne(uuid);
     if (!tag) {
-      throw new Error('Postagem não encontrada.');
+      throw new HttpException('Tag não encontrada.', HttpStatus.NOT_FOUND);
     }
 
     await this._tagService.delete(tag);
