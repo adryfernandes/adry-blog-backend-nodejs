@@ -1,5 +1,5 @@
 import { IsSigleTitle } from './../../../validations/isSingleTitle.validator';
-import { IsNotEmpty } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreatePostDTO {
   @IsSigleTitle({ message: 'Esse título já existe.' })
@@ -11,4 +11,8 @@ export class CreatePostDTO {
 
   @IsNotEmpty({ message: 'O conteúdo é obrigatório.' })
   content: string;
+
+  @IsArray()
+  @IsOptional()
+  tags: string[];
 }

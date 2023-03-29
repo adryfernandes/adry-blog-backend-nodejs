@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Timestamp } from './extendigs/timestamp';
 import { Column } from 'typeorm';
 

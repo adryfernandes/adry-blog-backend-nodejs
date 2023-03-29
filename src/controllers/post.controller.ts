@@ -10,6 +10,8 @@ import {
 } from '@nestjs/common';
 import { Param, Query } from '@nestjs/common/decorators';
 import { Paginate } from './../utils/paginate';
+import { TagService } from '../services/tag.service';
+import { TagEntity } from '../database/entities/tag.entity';
 import {
   QueryParamsPaginate,
   PaginateResponse,
@@ -21,7 +23,10 @@ import { CreatePostDTO } from './dto/post/createPost.dto';
 
 @Controller('post')
 export class PostController {
-  constructor(private _postService: PostService) {}
+  constructor(
+    private _postService: PostService,
+    private _tagService: TagService,
+  ) {}
 
   @Get('list')
   async listAll(
@@ -49,6 +54,23 @@ export class PostController {
     postEntity.title = data.title.toLowerCase().trim();
     postEntity.description = data.description.toLowerCase().trim();
     postEntity.content = data.content.trimEnd();
+
+    const tags: TagEntity[] = [];
+    if (data.tags.length) {
+      for (const tagUUID of data.tags) {
+        const tag: TagEntity = await this._tagService.findOne(tagUUID);
+        if (!tag) {
+          throw new HttpException(
+            `Tag de uuid: ${tagUUID} não encontrado.`,
+            HttpStatus.NOT_FOUND,
+          );
+        }
+
+        tags.push(tag);
+      }
+    }
+
+    postEntity.tags = tags;
 
     const savedPostEntity: PostEntity = await this._postService.create(
       postEntity,
