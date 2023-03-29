@@ -1,3 +1,4 @@
+import { KeyController } from './key.controller';
 import { Module } from '@nestjs/common';
 import { ServiceModule } from '../services/service.module';
 import { PostController } from './post.controller';
@@ -6,6 +7,6 @@ import { ValidationsModule } from '../validations/validations.module';
 
 @Module({
   imports: [ServiceModule, ValidationsModule],
-  controllers: [PostController, TagController],
+  controllers: [PostController, TagController, KeyController],
 })
 export class ControllerModule {}
