@@ -37,6 +37,7 @@ export class PostService {
       offset,
       order,
       options?.where,
+      { tags: true },
     );
 
     return await paginate.byUpdatedAt();

@@ -40,7 +40,9 @@ export class PostController {
   async get(@Param() params: any): Promise<PostEntity> {
     const { uuid } = params;
 
-    const post: PostEntity = await this._postService.findOne(uuid);
+    const post: PostEntity = await this._postService.findOne(uuid, {
+      relations: { tags: true },
+    });
     if (!post) {
       throw new HttpException('Postagem não encontrada.', HttpStatus.NOT_FOUND);
     }
