@@ -1,6 +1,11 @@
+import { Body, Controller, Get, Post, Put, Delete } from '@nestjs/common';
+import { Param, Query } from '@nestjs/common/decorators';
+import { Paginate } from './../utils/paginate';
+import {
+  QueryParamsPaginate,
+  PaginateResponse,
+} from './../interfaces/paginate.interface';
 import { UpdatePostDTO } from './dto/post/updatePost.dto';
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Delete, Param, Put } from '@nestjs/common/decorators';
 import { PostEntity } from '../database/entities/post.entity';
 import { PostService } from '../services/post.service';
 import { CreatePostDTO } from './dto/post/createPost.dto';
@@ -10,15 +15,18 @@ export class PostController {
   constructor(private _postService: PostService) {}
 
   @Get('list')
-  async listAll(): Promise<PostEntity[]> {
-    return await this._postService.list();
+  async listAll(
+    @Query() queryParams: QueryParamsPaginate,
+  ): Promise<PaginateResponse> {
+    const query: QueryParamsPaginate = Paginate.handleQueryParams(queryParams);
+    return await this._postService.list(query);
   }
 
   @Get(':uuid')
   async get(@Param() params: any): Promise<PostEntity> {
     const { uuid } = params;
 
-    const post: PostEntity = await this._postService.find(uuid);
+    const post: PostEntity = await this._postService.findOne(uuid);
     if (!post) {
       throw new Error('Postagem não encontrada.');
     }
@@ -46,7 +54,7 @@ export class PostController {
     @Body() data: UpdatePostDTO,
   ): Promise<PostEntity> {
     const { uuid } = params;
-    const post: PostEntity = await this._postService.find(uuid);
+    const post: PostEntity = await this._postService.findOne(uuid);
     if (!post) {
       throw new Error('Postagem não encontrada.');
     }
@@ -63,7 +71,7 @@ export class PostController {
   @Delete(':uuid')
   async delete(@Param() params: any): Promise<void> {
     const { uuid } = params;
-    const post: PostEntity = await this._postService.find(uuid);
+    const post: PostEntity = await this._postService.findOne(uuid);
     if (!post) {
       throw new Error('Postagem não encontrada.');
     }

@@ -1,5 +1,12 @@
+import { Param, Put, Delete } from '@nestjs/common/decorators';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { UpdateTagDTO } from './dto/tag/updateTag.dto';
+import { Paginate } from './../utils/paginate';
+import {
+  QueryParamsPaginate,
+  PaginateResponse,
+} from './../interfaces/paginate.interface';
 import { CreateTagDTO } from './dto/tag/createTag.dto';
-import { Body, Controller, Get, Post } from '@nestjs/common';
 import { TagEntity } from 'src/database/entities/tag.entity';
 import { TagService } from 'src/services/tag.service';
 
@@ -8,8 +15,43 @@ export class TagController {
   constructor(private _tagService: TagService) {}
 
   @Get('list')
-  async list(): Promise<TagEntity[]> {
-    return await this._tagService.list();
+  async listAll(
+    @Query() queryParams: QueryParamsPaginate,
+  ): Promise<PaginateResponse> {
+    const query: QueryParamsPaginate = Paginate.handleQueryParams(queryParams);
+    return await this._tagService.list(query);
+  }
+
+  @Get(':uuid')
+  async get(@Param() params: any): Promise<TagEntity> {
+    const { uuid } = params;
+
+    const tag: TagEntity = await this._tagService.findOne(uuid);
+    if (!tag) {
+      throw new Error('Tag não encontrada.');
+    }
+
+    return tag;
+  }
+
+  @Put(':uuid')
+  async update(
+    @Param() params: any,
+    @Body() data: UpdateTagDTO,
+  ): Promise<TagEntity> {
+    const { uuid } = params;
+    const tag: TagEntity = await this._tagService.findOne(uuid);
+    if (!tag) {
+      throw new Error('Tag não encontrada.');
+    }
+
+    tag.title = data.title && data.title.toLowerCase().trim();
+    tag.background_color =
+      data.background_color && data.background_color.trim();
+    tag.text_color = data.text_color && data.text_color.trim();
+
+    await this._tagService.update(tag);
+    return tag;
   }
 
   @Post()
@@ -21,5 +63,16 @@ export class TagController {
 
     const tagSaved: TagEntity = await this._tagService.create(tag);
     return tagSaved;
+  }
+
+  @Delete(':uuid')
+  async delete(@Param() params: any): Promise<void> {
+    const { uuid } = params;
+    const tag: TagEntity = await this._tagService.findOne(uuid);
+    if (!tag) {
+      throw new Error('Postagem não encontrada.');
+    }
+
+    await this._tagService.delete(tag);
   }
 }

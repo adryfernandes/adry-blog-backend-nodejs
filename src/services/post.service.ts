@@ -1,3 +1,8 @@
+import { Paginate } from './../utils/paginate';
+import {
+  QueryParamsPaginate,
+  PaginateResponse,
+} from './../interfaces/paginate.interface';
 import { PostEntity } from '../database/entities/post.entity';
 import { Inject, Injectable } from '@nestjs/common';
 import {
@@ -14,15 +19,27 @@ export class PostService {
     private postRepository: Repository<PostEntity>,
   ) {}
 
-  async find(
+  async findOne(
     uuid: string,
     options?: FindManyOptions<PostEntity>,
   ): Promise<PostEntity> {
     return await this.postRepository.findOne({ where: { uuid }, ...options });
   }
 
-  async list(options?: FindManyOptions<PostEntity>): Promise<PostEntity[]> {
-    return await this.postRepository.find({ ...options });
+  async list(
+    params: QueryParamsPaginate,
+    options?: FindManyOptions<PostEntity>,
+  ): Promise<PaginateResponse> {
+    const { initialPage, offset, order } = params;
+    const paginate: Paginate = new Paginate(
+      this.postRepository,
+      initialPage,
+      offset,
+      order,
+      options?.where,
+    );
+
+    return await paginate.byUpdatedAt();
   }
 
   async findByTitle(
