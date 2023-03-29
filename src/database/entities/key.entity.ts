@@ -7,7 +7,7 @@ export class KeyEntity {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   x_api_key: string;
 
   @Column(() => Timestamp, { prefix: false })
