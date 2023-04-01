@@ -1,5 +1,5 @@
 import { AuthorizationMiddleware } from './middlewares/authorization.middleware';
-import { Module, Post } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { MiddlewareConsumer, NestModule } from '@nestjs/common/interfaces';
 import { ControllerModule } from './controllers/controller.module';
 import { ServiceModule } from './services/service.module';
