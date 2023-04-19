@@ -20,6 +20,7 @@ import { UpdatePostDTO } from './dto/post/updatePost.dto';
 import { PostEntity } from '../database/entities/post.entity';
 import { PostService } from '../services/post.service';
 import { CreatePostDTO } from './dto/post/createPost.dto';
+import { Like } from 'typeorm';
 
 @Controller('post')
 export class PostController {
@@ -34,6 +35,33 @@ export class PostController {
   ): Promise<PaginateResponse> {
     const query: QueryParamsPaginate = Paginate.handleQueryParams(queryParams);
     return await this._postService.list(query);
+  }
+
+  /**
+   * Busca no título, na descrição e no conteúdo a a palavra desejada
+   * @param queryParams - parâmetros de paginação
+   * @param others - outros parâmetros
+   * @returns
+   */
+  @Get('search')
+  async search(
+    @Query() queryParams: QueryParamsPaginate,
+    @Query() others: string,
+  ): Promise<PaginateResponse> {
+    const search = String(others?.search)?.toLowerCase() || undefined;
+    if (!search) {
+      return <PaginateResponse>{ data: [], count: 0 };
+    }
+
+    const query: QueryParamsPaginate = Paginate.handleQueryParams(queryParams);
+
+    return await this._postService.list(query, {
+      where: [
+        { title: Like(`%${search}%`) },
+        { description: Like(`%${search}%`) },
+        { content: Like(`%${search}%`) },
+      ],
+    });
   }
 
   @Get(':uuid')
