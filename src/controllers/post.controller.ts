@@ -64,6 +64,30 @@ export class PostController {
     });
   }
 
+  /**
+   * Busca posts com uma certa tag
+   * @param queryParams
+   * @param params
+   * @returns
+   */
+  @Get('tag/:tagUUID')
+  async listByTag(
+    @Query() queryParams: QueryParamsPaginate,
+    @Param() params: any,
+  ): Promise<PaginateResponse> {
+    const { tagUUID } = params;
+
+    const query: QueryParamsPaginate = Paginate.handleQueryParams(queryParams);
+    return await this._postService.list(query, {
+      where: {
+        tags: {
+          uuid: tagUUID,
+        },
+      },
+      relations: { tags: true },
+    });
+  }
+
   @Get(':uuid')
   async get(@Param() params: any): Promise<PostEntity> {
     const { uuid } = params;
