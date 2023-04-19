@@ -32,36 +32,22 @@ export class PostController {
   @Get('list')
   async listAll(
     @Query() queryParams: QueryParamsPaginate,
-  ): Promise<PaginateResponse> {
-    const query: QueryParamsPaginate = Paginate.handleQueryParams(queryParams);
-    return await this._postService.list(query);
-  }
-
-  /**
-   * Busca no título, na descrição e no conteúdo a a palavra desejada
-   * @param queryParams - parâmetros de paginação
-   * @param others - outros parâmetros
-   * @returns
-   */
-  @Get('search')
-  async search(
-    @Query() queryParams: QueryParamsPaginate,
     @Query() others: string,
   ): Promise<PaginateResponse> {
-    const search = String(others?.search)?.toLowerCase() || undefined;
-    if (!search) {
-      return <PaginateResponse>{ data: [], count: 0 };
+    const { search } = others;
+
+    let where = {};
+    if (search) {
+      const handleSearch = String(search).toLowerCase();
+      where = [
+        { title: Like(`%${handleSearch}%`) },
+        { description: Like(`%${handleSearch}%`) },
+        { content: Like(`%${handleSearch}%`) },
+      ];
     }
 
     const query: QueryParamsPaginate = Paginate.handleQueryParams(queryParams);
-
-    return await this._postService.list(query, {
-      where: [
-        { title: Like(`%${search}%`) },
-        { description: Like(`%${search}%`) },
-        { content: Like(`%${search}%`) },
-      ],
-    });
+    return await this._postService.list(query, { where });
   }
 
   /**
