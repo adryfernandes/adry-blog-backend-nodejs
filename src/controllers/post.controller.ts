@@ -96,7 +96,7 @@ export class PostController {
     postEntity.content = data.content.trimEnd();
 
     const tags: TagEntity[] = [];
-    if (data.tags.length) {
+    if (data?.tags?.length) {
       for (const tagUUID of data.tags) {
         const tag: TagEntity = await this._tagService.findOne(tagUUID);
         if (!tag) {
